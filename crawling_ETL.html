@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta>
+    <title></title>
+  </head>
+  <body>
+    MENU
+    <input type="button" id="list" value="db데이터 출력">
+    <input type="button" id="priceDescList" value="가격 별 내림차순 출력">
+    <input type="button" id="likeDescList" value="좋아요 갯수 별 내림차순 출력">
+    <div id="listArea"></div>
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+
+    //ajax로 클릭하면 실행되게 명령어 작성
+    $("#list").click(function(){
+      $.ajax({
+        url:`http://localhost/getDbList`,
+        data: {},
+        success:function(data){
+          // 기존 내용이 있으면 지우고 다시 출력하는 명령어
+          $("#listArea").empty();
+          for(let i=0;i<data.length;i++) {
+            let resultdata = data[i];
+            let list = `<div>제품명 : ${resultdata.product} || 가격 : ${resultdata.price}원 || 좋아요 갯수 : ${resultdata.likeCount}개</div>`;
+            $("#listArea").append(list);
+          }
+        }
+      });
+    });
+
+    $("#priceDescList").click(function(){
+      $.ajax({
+        url:`http://localhost/getListPriceDesc`,
+        data: {},
+        success:function(data){
+          $("#listArea").empty();
+          for(let i=0;i<data.length;i++) {
+            let resultdata = data[i];
+            let DescList = `<div>가격 : ${resultdata.price}원 || 제품명 : ${resultdata.product} || 좋아요 갯수 : ${resultdata.likeCount}개</div>`;
+            $("#listArea").append(DescList);
+          }
+        }
+      });
+    });
+
+    $("#likeDescList").click(function(){
+      $.ajax({
+        url:`http://localhost/getListLikeDesc`,
+        data: {},
+        success:function(data){
+          $("#listArea").empty();
+          for(let i=0;i<data.length;i++) {
+            let resultdata = data[i];
+            let DescList = `<div>좋아요 갯수 : ${resultdata.likeCount}개 || 가격 : ${resultdata.price}원 || 제품명 : ${resultdata.product}</div>`;
+            $("#listArea").append(DescList);
+          }
+        }
+      });
+    });
+
+  </script>
+</html>
